@@ -32,7 +32,7 @@ namespace thready {
                                 return;
 
                             task = std::move(tasks.front());
-                            tasks.pop();
+                            tasks.pop(task);
                         }
                         task();
                     }

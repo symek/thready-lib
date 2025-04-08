@@ -16,6 +16,10 @@ namespace thready {
             tail.store(dummy.get());
             holder = std::move(dummy); // own the dummy node
         }
+        // Define copy constructor
+        LockFreeQueue(const LockFreeQueue& other) = delete;
+      // Define move constructor
+        LockFreeQueue(LockFreeQueue&& other) = delete;
 
         void push(T value) {
             auto new_node = std::make_unique<Node>(std::move(value));

@@ -21,5 +21,5 @@ target_include_directories(thready
 )
 
 # Optional: Catch2 test suite
-#enable_testing()
-#add_subdirectory(tests)
+enable_testing()
+add_subdirectory(tests)

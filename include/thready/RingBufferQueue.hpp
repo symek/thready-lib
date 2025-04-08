@@ -11,9 +11,20 @@ namespace thready {
     class RingBufferQueue {
     public:
         explicit RingBufferQueue(size_t capacity)
-            : buffer(capacity), head(0), tail(0), cap(capacity) {}
+                : buffer(capacity), head(0), tail(0), cap(capacity) {}
 
-        bool push(const T& item) {
+        RingBufferQueue(RingBufferQueue &&other) noexcept
+                : buffer(std::move(other.buffer)),
+                  head(other.head.load()),
+                  tail(other.tail),
+                  cap(other.cap) {}
+
+        RingBufferQueue(const RingBufferQueue &) = delete;
+
+        RingBufferQueue &operator=(const RingBufferQueue &) = delete;
+
+
+        bool push(const T &item) {
             size_t current_tail = tail;
             size_t next_tail = increment(current_tail);
 
@@ -26,7 +37,7 @@ namespace thready {
             return true;
         }
 
-        bool pop(T& item) {
+        bool pop(T &item) {
             size_t current_head = head.load(std::memory_order_relaxed);
             if (current_head == tail) {
                 return false; // empty

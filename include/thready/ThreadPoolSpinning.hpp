@@ -7,15 +7,23 @@
 #include <thread>
 #include <vector>
 #include <atomic>
-#include "ThreadPoolBase.hpp"
+#include <type_traits> // for std::is_constructible_v
 
 namespace thready {
 
+
     template<typename Queue, typename TaskType = std::function<void()>>
-    class ThreadPoolSpinning : public ThreadPoolBase<ThreadPoolSpinning<Queue, TaskType>, TaskType> {
+    class ThreadPoolSpinning {
     public:
-        ThreadPoolSpinning(size_t thread_count, Queue queue)
-            : stop_flag(false), tasks(std::move(queue)) {
+        ThreadPoolSpinning(size_t thread_count, size_t queue_capacity = 0)
+                : stop_flag(false),
+                  tasks([&] {
+                      if constexpr (std::is_constructible_v<Queue, size_t>) {
+                          return Queue(queue_capacity);
+                      } else {
+                          return Queue();
+                      }
+                  }()) {
             for (size_t i = 0; i < thread_count; ++i) {
                 workers.emplace_back([this]() {
                     while (!stop_flag.load() || !tasks.empty()) {
@@ -32,13 +40,13 @@ namespace thready {
 
         ~ThreadPoolSpinning() {
             stop_flag.store(true);
-            for (auto& t : workers) {
+            for (auto &t: workers) {
                 if (t.joinable()) t.join();
             }
         }
 
         template<typename Func>
-        bool enqueue(Func&& f) {
+        bool enqueue(Func &&f) {
             return tasks.push(TaskType(std::forward<Func>(f)));
         }
 
@@ -52,4 +60,6 @@ namespace thready {
         Queue tasks;
     };
 }
+
+#include "ThreadPoolBase.hpp"
 

@@ -22,6 +22,12 @@ public:
         return true;
     }
 
+    // Add front member function
+    T &front() {
+        std::lock_guard<std::mutex> lock(mtx);
+        return q.front();
+    }
+
     bool empty() const {
         std::lock_guard<std::mutex> lock(mtx);
         return q.empty();
