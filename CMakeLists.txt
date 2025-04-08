@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.22)
 project(thready)
 set(CMAKE_CXX_STANDARD_REQUIRED 20)
 
+find_package(Threads REQUIRED)
+
 # Add library
 add_library(thready STATIC
         include/thready/LockFreeQueue.hpp
@@ -19,6 +21,16 @@ target_include_directories(thready
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
+
+add_executable(thready_test
+        src/thready_test.cpp
+        include/thready/ThreadPools.hpp
+        src/thready_test.cpp)
+
+target_link_libraries(thready_test
+        thready
+        pthread
+        )
 
 # Optional: Catch2 test suite
 enable_testing()

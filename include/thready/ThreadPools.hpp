@@ -16,5 +16,5 @@ namespace thready {
     using BlockingPool = ThreadPoolBlocking <MutexQueue<Task>>;
     using SpinningPool = ThreadPoolSpinning<RingBufferQueue < Task>>;
     using LockFreePool = ThreadPoolSpinning<LockFreeQueue < Task>>;
-    using HybridPool = ThreadPoolHybrid <RingBufferQueue<Task>>;
+    using HybridPool = ThreadPoolHybrid<RingBufferQueue<Task>>;
 }

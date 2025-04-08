@@ -17,7 +17,7 @@ namespace thready {
     template<typename Queue, typename TaskType = std::function<void()>>
     class ThreadPoolHybrid {
     public:
-        explicit ThreadPoolHybrid(size_t thread_count, size_t queue_capacity = 0)
+        explicit ThreadPoolHybrid(size_t thread_count, size_t queue_capacity)
                 : stop_flag(false),
                   tasks([&] {
                       if constexpr (std::is_constructible_v<Queue, size_t>) {
