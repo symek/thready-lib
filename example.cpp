@@ -1,7 +1,7 @@
 //
 // Created by symek on 4/8/25.
 //
-#include "thready/ThreadPools.hpp"
+#include <thready/ThreadPools.hpp>
 #include <iostream>
 
 int main(){

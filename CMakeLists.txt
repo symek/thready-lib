@@ -22,12 +22,11 @@ target_include_directories(thready
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
-add_executable(thready_test
-        src/thready_test.cpp
-        include/thready/ThreadPools.hpp
-        src/thready_test.cpp)
+add_executable(example
+        example.cpp
+        )
 
-target_link_libraries(thready_test
+target_link_libraries(example
         thready
         pthread
         )
