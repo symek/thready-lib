@@ -10,6 +10,8 @@
 #include <condition_variable>
 #include <functional>
 #include <atomic>
+#include <queue>
+
 
 namespace thready {
 
@@ -55,7 +57,7 @@ namespace thready {
         void enqueue(Func &&f) {
             {
                 std::scoped_lock lock(queue_mutex);
-                tasks.emplace(std::forward<Func>(f));
+                tasks.push(std::forward<Func>(f));
             }
             condition.notify_one();
         }

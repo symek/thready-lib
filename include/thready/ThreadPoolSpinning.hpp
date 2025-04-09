@@ -46,8 +46,8 @@ namespace thready {
         }
 
         template<typename Func>
-        bool enqueue(Func &&f) {
-            return tasks.push(TaskType(std::forward<Func>(f)));
+        void enqueue(Func &&f) {
+            tasks.push(TaskType(std::forward<Func>(f)));
         }
 
         bool has_work() {

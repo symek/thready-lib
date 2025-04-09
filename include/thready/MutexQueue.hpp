@@ -14,6 +14,20 @@ public:
         return true;
     }
 
+//    bool push(T&& item) {
+//        std::lock_guard<std::mutex> lock(mtx);
+//        q.push(std::move(item));
+//        return true;
+//    }
+//
+//    bool emplace(T&& item) {
+//        std::lock_guard<std::mutex> lock(mtx);
+//        q.push(std::move(item));
+//        return true;
+//    }
+
+
+
     bool pop(T& item) {
         std::lock_guard<std::mutex> lock(mtx);
         if (q.empty()) return false;
