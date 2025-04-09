@@ -62,10 +62,10 @@ namespace thready {
             condition.notify_one();
         }
 
-        bool has_work() {
-            std::scoped_lock lock(queue_mutex);
-            return !tasks.empty();
-        }
+//        bool has_work() {
+//            std::scoped_lock lock(queue_mutex);
+//            return !tasks.empty();
+//        }
 
     private:
         std::vector<std::thread> workers;

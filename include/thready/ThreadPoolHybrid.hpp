@@ -15,7 +15,7 @@ namespace thready {
 
 
     template<typename Queue, typename TaskType = std::function<void()>>
-    class ThreadPoolHybrid {
+    class ThreadPoolHybrid : public ThreadPoolBase<ThreadPoolHybrid<Queue, TaskType>, TaskType>  {
     public:
         explicit ThreadPoolHybrid(size_t thread_count, size_t queue_capacity)
                 : stop_flag(false),

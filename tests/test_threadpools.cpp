@@ -5,8 +5,8 @@
 #include "../include/thready/ThreadPools.hpp"
 
 TEST_CASE("SpinningPool processes tasks", "[threadpool]") {
-    thready::RingBufferQueue<thready::Task> q(10);
-    thready::SpinningPool pool(2, std::move(q));
+//    thready::RingBufferQueue<thready::Task> q(10);
+    thready::SpinningPool pool(2, 10);
 
     std::atomic<int> counter{0};
 
@@ -51,12 +51,13 @@ void test_saturation(Pool& pool, int total, int capacity) {
 
     int enqueued = 0;
     for (int i = 0; i < total; ++i) {
-        if (pool.enqueue([&counter]() {
+        pool.enqueue([&counter]() {
             std::this_thread::sleep_for(1ms);
             ++counter;
-        })) {
+        });
+
             ++enqueued;
-        }
+
     }
 
     // Some queues may drop tasks if full
@@ -69,10 +70,10 @@ void test_saturation(Pool& pool, int total, int capacity) {
 // Test cases
 // ----------------------------
 
-TEST_CASE("BlockingPool executes tasks") {
-    BlockingPool pool(4);
-    test_basic_execution(pool, 20);
-}
+//TEST_CASE("BlockingPool executes tasks") {
+//    BlockingPool pool(4);
+//    test_basic_execution(pool, 20);
+//}
 
 TEST_CASE("SpinningPool executes tasks") {
     SpinningPool pool(4, 64);

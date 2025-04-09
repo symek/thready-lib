@@ -1,13 +1,10 @@
 //
 // Created by symek on 4/8/25.
 //
-
 #pragma once
-#include <thread>
-#include <vector>
-#include <atomic>
-#include <functional>
 
+#include <functional>
+#include <thread>
 
 namespace thready {
 
@@ -15,12 +12,12 @@ namespace thready {
     class ThreadPoolBase {
     public:
         template<typename Func>
-         void enqueue(Func&& f) {
-             static_cast<Derived*>(this)->push(std::forward<Func>(f));
+        void enqueue(Func&& f) {
+            static_cast<Derived*>(this)->tasks.push(TaskType(std::forward<Func>(f)));
         }
 
-        bool has_work() {
-            return static_cast<Derived*>(this)->has_work();
+        [[nodiscard]] bool has_work() const {
+            return !static_cast<const Derived*>(this)->tasks.empty();
         }
 
         void wait_until_empty() {
@@ -30,3 +27,4 @@ namespace thready {
         }
     };
 }
+

@@ -40,8 +40,8 @@ int main() {
     }
     spinning_pool.wait_until_empty();
     std::cout << "SpinningPool done" << std::endl;
-
-
+//
+//
     for (const auto &bucket: raster) {
         for (const auto &elem: bucket) {
             std::cout << elem << " ";
