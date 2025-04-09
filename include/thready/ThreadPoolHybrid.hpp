@@ -71,6 +71,17 @@ namespace thready {
             return success;
         }
 
+
+        bool has_work() {
+            return !tasks.empty();
+        }
+
+        void wait_until_empty() {
+            while (has_work()) {
+                std::this_thread::yield();
+            }
+        }
+
     private:
         std::vector<std::thread> workers;
         Queue tasks;

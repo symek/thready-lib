@@ -8,12 +8,12 @@
 #include <vector>
 #include <atomic>
 #include <type_traits> // for std::is_constructible_v
-
+#include "ThreadPoolBase.hpp"
 namespace thready {
 
 
     template<typename Queue, typename TaskType = std::function<void()>>
-    class ThreadPoolSpinning {
+    class ThreadPoolSpinning : public ThreadPoolBase<ThreadPoolSpinning<Queue, TaskType>, TaskType>{
     public:
         ThreadPoolSpinning(size_t thread_count, size_t queue_capacity )
                 : stop_flag(false),
@@ -61,5 +61,4 @@ namespace thready {
     };
 }
 
-#include "ThreadPoolBase.hpp"
 

@@ -15,8 +15,8 @@ namespace thready {
     class ThreadPoolBase {
     public:
         template<typename Func>
-        bool enqueue(Func&& f) {
-            return static_cast<Derived*>(this)->enqueue(std::forward<Func>(f));
+         void enqueue(Func&& f) {
+             static_cast<Derived*>(this)->push(std::forward<Func>(f));
         }
 
         bool has_work() {
