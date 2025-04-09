@@ -13,8 +13,8 @@
 
 namespace thready {
     using Task = std::function<void()>;
-    using BlockingPool = ThreadPoolBlocking <MutexQueue<Task>>;
-    using SpinningPool = ThreadPoolSpinning<RingBufferQueue < Task>>;
-    using LockFreePool = ThreadPoolSpinning<LockFreeQueue < Task>>;
+    using BlockingPool = ThreadPoolBlocking<MutexQueue<Task>>;
+    using SpinningPool = ThreadPoolSpinning<RingBufferQueue<Task>>;
+    using LockFreePool = ThreadPoolSpinning<LockFreeQueue<Task>>;
     using HybridPool = ThreadPoolHybrid<RingBufferQueue<Task>>;
 }
