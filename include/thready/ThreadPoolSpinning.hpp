@@ -8,7 +8,7 @@
 #include <atomic>
 #include <type_traits>
 #include "ThreadPoolBase.hpp"
-
+#include <iostream>
 namespace thready {
 
     template<typename Queue, typename TaskType = std::function<void()>>
@@ -38,8 +38,13 @@ namespace thready {
         }
 
         ~ThreadPoolSpinning() {
+            // Wait for the queue to become empty
+            while (!tasks.empty()) {
+                std::this_thread::yield();
+            }
             stop_flag.store(true);
-            for (auto& t : workers) {
+            std::cout << "Stopping thread pool..." << std::endl;
+            for (auto &t: workers) {
                 if (t.joinable()) t.join();
             }
         }

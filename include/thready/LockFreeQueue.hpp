@@ -4,7 +4,7 @@
 #include <memory>
 #include <atomic>
 #include <functional>
-
+#include <iostream>
 namespace thready {
 
     template<typename T>
@@ -51,32 +51,38 @@ namespace thready {
 
                 if (head.compare_exchange_weak(first, next)) {
                     result = std::move(next->value);
+//                    std::unique_ptr<Node> old(std::exchange(holder, std::move(first->next))); // cleanup old dummy
                     std::unique_ptr<Node> old(first); // cleanup old dummy
                     return true;
                 }
             }
         }
 
-        bool empty() const {
+        [[nodiscard]] bool empty() const {
             Node* first = head.load();
             return first->next.load() == nullptr;
         }
 
         ~LockFreeQueue() {
-            Node* node = head.load();
-            while (node != nullptr) {
-                Node* next = node->next.load();
-                delete node;
-                node = next;
-            }
+//            Node* node = head.load();
+            std::cout << "Deleting queue nodes..." << std::endl;
+//            while (head != nullptr) {
+//                std::unique_ptr<Node> old(std::exchange(holder, std::move(head->next)));
+//            }
+//            while (node != nullptr) {
+//                Node* next = node->next.load();
+//                delete node;
+//                node = next;
+//            }
         }
 
     private:
         struct Node {
             T value;
             std::atomic<Node*> next;
-            Node() : next(nullptr) {}
-            explicit Node(T val) : value(std::move(val)), next(nullptr) {}
+//             std::unique_ptr<Node> next;
+            Node() = default;
+            explicit Node(T val) : value(std::move(val)) {}
         };
 
         std::atomic<Node*> head;
